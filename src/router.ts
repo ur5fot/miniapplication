@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import store from './store'
+import { ActionsEnum } from "@/constants/ActionsEnum";
+import { RoutesEnum } from "@/constants/RoutesEnum";
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -10,16 +13,33 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: RoutesEnum.home,
       component: Home
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      path: '/login',
+      name: RoutesEnum.login,
+      component: () => import('./views/Login.vue')
+    },
+    {
+      path: '/news',
+      name: RoutesEnum.news,
+      component: () => import('./views/News.vue')
+    },
+    {
+      path: '/profile',
+      name: RoutesEnum.profile,
+      component: () => import('./views/Profile.vue'),
+      beforeEnter(to, from, next) {
+        store.dispatch(ActionsEnum.loadIsLogin).then(isLogin => {
+          if ( isLogin ) {
+            next()
+          } else {
+            next({ name: RoutesEnum.login })
+          }
+        })
+
+      }
     }
   ]
 })

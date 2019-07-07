@@ -1,60 +1,66 @@
 <template>
-    <div class="hello">
-        <h1>{{ msg }}</h1>
-        <p>
-            For a guide and recipes on how to configure / customize this project,<br>
-            check out the
-            <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-        </p>
-        <h3>Installed CLI Plugins</h3>
-        <ul>
-            <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript" target="_blank" rel="noopener">typescript</a></li>
-        </ul>
-        <h3>Essential Links</h3>
-        <ul>
-            <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-            <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-            <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-            <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-            <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-        </ul>
-        <h3>Ecosystem</h3>
-        <ul>
-            <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-            <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-            <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-            <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-            <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-        </ul>
+    <div class="form-login">
+        <h2>{{ title }}</h2>
+        <form @submit.prevent="onLogin">
+            <label class="item">
+                <span>User name:</span>
+                <input v-model="name" type="text">
+            </label>
+            <label class="item">
+                <span>Password:</span>
+                <input v-model="password" type="password">
+            </label>
+            <p class="item">
+                <button  type="submit">Login</button>
+            </p>
+        </form>
+        <p v-if="isError">Имя пользователя или пароль введены не верно</p>
     </div>
 </template>
 
 <script lang="ts">
-  import { Component, Prop, Vue } from 'vue-property-decorator';
+  import { Component, Vue } from 'vue-property-decorator';
+  import { LoginInterface } from "@/models/LoginInterface";
+  import { ActionsEnum } from "@/constants/ActionsEnum";
+  import { RoutesEnum } from "@/constants/RoutesEnum";
 
   @Component
-  export default class HelloWorld extends Vue {
-    @Prop() private msg!: string;
+  export default class FormLogin extends Vue {
+    title: string = 'Login Form';
+    login: LoginInterface = {
+      name: '',
+      password: ''
+    };
+
+    isError: boolean = false;
+
+    onLogin() {
+      let { name: serveName, password: servePassword } = this.$store.getters.loginData;
+
+      if ( this.name === serveName && this.password === servePassword ) {
+        this.$store.dispatch(ActionsEnum.setLogin, true)
+          .then(() => {
+            this.$router.push({ name: RoutesEnum.profile });
+            this.isError = false
+          });
+      } else {
+        this.isError = true
+      }
+    }
   }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-    h3 {
-        margin: 40px 0 0;
-    }
-
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    li {
-        display: inline-block;
-        margin: 0 10px;
-    }
-
-    a {
-        color: #42b983;
+    .form-login {
+        .item {
+            width: 100%;
+            display: inline-block;
+            margin-top: 1rem;
+            input, button {
+                width: 50%;
+                min-width: 3rem;
+                margin: .1rem 1rem;
+            }
+        }
     }
 </style>

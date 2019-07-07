@@ -1,5 +1,6 @@
-export enum ActionsEnum {
-  setLogin = 'setLogin',
-  loadIsLogin = 'loadIsLogin',
-  logout = 'logout'
+export enum RoutesEnum {
+  home = 'home',
+  login = 'login',
+  news = 'news',
+  profile = 'profile',
 }

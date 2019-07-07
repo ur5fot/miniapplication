@@ -1,4 +1,5 @@
-# robosoft
+# This is a mini application
+It has a homepage, login page, news page,  profile page
 
 ## Project setup
 ```

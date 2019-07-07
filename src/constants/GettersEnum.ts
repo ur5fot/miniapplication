@@ -1,5 +1,5 @@
-export enum ActionsEnum {
-  setLogin = 'setLogin',
-  loadIsLogin = 'loadIsLogin',
-  logout = 'logout'
+export enum GettersEnum {
+  loginData = 'loginData',
+  isLogin = 'isLogin',
+  news = 'news',
 }

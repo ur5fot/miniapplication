@@ -13,7 +13,7 @@
   import { Component, Vue } from 'vue-property-decorator';
 
   @Component
-  export default class Article extends Vue {
+  export default class ArticleNews extends Vue {
 
   }
 </script>

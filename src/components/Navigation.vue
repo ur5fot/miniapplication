@@ -1,20 +1,19 @@
 <template>
-    <div>
-        <h2>
-            <slot name="title"></slot>
-        </h2>
-        <div>
-            <slot name="content"></slot>
+        <div id="nav">
+            <router-link :to="{name: routers.home}">Home</router-link> |
+            <router-link :to="{name: routers.login}">Login</router-link> |
+            <router-link :to="{name: routers.news}">News</router-link> |
+            <router-link :to="{name: routers.profile}">Profile</router-link>
         </div>
-    </div>
 </template>
 
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
+  import { RoutesEnum } from "@/constants/RoutesEnum";
 
   @Component
-  export default class ArticleNews extends Vue {
-
+  export default class Navigation extends Vue {
+    routers = RoutesEnum;
   }
 </script>
 
